@@ -21,3 +21,13 @@ myScanL f x ys =
 myScanR :: (b -> a -> a) -> a -> [b] -> [a]
 myScanR _ x [] = [x]
 myScanR f x (y:ys) = f y x:myScanR f x ys
+
+myIterate :: (a -> a) -> a -> [a]
+myIterate f x = x:myIterate f (f x)
+
+myUnfoldR :: (b -> Maybe (a, b)) -> b -> [a]
+myUnfoldR f y = case f y of
+  Just (x, y') -> x:myUnfoldR f y'
+
+betterIterate :: (a -> a) -> a -> [a]
+betterIterate f = myUnfoldR (\ x -> Just (x, f x))
